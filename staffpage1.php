@@ -1,18 +1,25 @@
 <?php
-session_start();
+session_start();  // Start the session
 
-// Check if the staff is logged in (staff_id is stored in session)
+// Check if staff is logged in
 if (!isset($_SESSION['staff_id'])) {
-    header('Location: login.php');  // Redirect to login page if not logged in
+    // If not logged in, redirect to login page
+    header('Location: stafflogin.php');
     exit();
 }
 
+// Include database configuration to get staff info
 include('config.php');
 
-// Fetch schedule for the logged-in staff member
+// Get the staff ID from session
 $staff_id = $_SESSION['staff_id'];
-$sql = "SELECT work_date, shift, status FROM schedules WHERE staff_id = $staff_id";
-$result = $conn->query($sql);
+
+// Query to get staff details from the database
+$stmt = $conn->prepare("SELECT * FROM staff WHERE staff_id = ?");
+$stmt->bind_param("i", $staff_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$staff = $result->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -31,11 +38,11 @@ $result = $conn->query($sql);
             <img src="ktm.png" alt="Logo">
         </div>
         <nav class="navbar">
-            <a href="#View Schedule">View Schedule</a>
-            <a href="#Change Schedule">Change Schedule</a>
-            <a href="#profile" class="profile-icon">
-                <i class="fas fa-user"></i>
-            </a>
+            <a href="staffpage2.php">Edit Profile</a>
+            <a href="staffpage3.php">View Schedule</a>
+            <a href="staffpage4.php">Change Schedule</a>
+            <a href="staffpage5.php">Request Leave</a>
+            <a href="stafflogout.php">Logout</a>  <!-- Logout link -->
         </nav>
     </header>
 
@@ -47,47 +54,11 @@ $result = $conn->query($sql);
         <img src="train.jpg" alt="Train">
     </div>
 
-    <!-- Staff Schedule View -->
-    <section id="View Schedule">
-        <h2>Your Schedule</h2>
-        <table>
-            <tr>
-                <th>Work Date</th>
-                <th>Shift</th>
-                <th>Status</th>
-            </tr>
-            <?php
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>
-                            <td>" . $row["work_date"] . "</td>
-                            <td>" . $row["shift"] . "</td>
-                            <td>" . $row["status"] . "</td>
-                          </tr>";
-                }
-            } else {
-                echo "<tr><td colspan='3'>No schedule available</td></tr>";
-            }
-            ?>
-        </table>
-    </section>
-
     <!-- Blue Footer -->
     <footer class="blue-footer">
         <div class="footer-content">
             <p>&copy; 2024 ETS Staff Schedule. All rights reserved.</p>
-            <nav class="footer-links">
-                <a href="staffpage2.php">Edit Profile</a>
-                <a href="staffpage3.php">View Schedule</a>
-                <a href="staffpage4.php">Change Schedule</a>
-                <a href="staffpage5.php">Request Leave</a>
-            </nav>
         </div>
     </footer>
-
-    <?php
-    // Close the database connection
-    $conn->close();
-    ?>
 </body>
 </html>
