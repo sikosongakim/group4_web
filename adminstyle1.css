@@ -1,171 +1,144 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Open Sans', sans-serif;
-  }
-  body{
-    position: relative;
-    min-height: 100vh;
-    width: 100%;
-    overflow: hidden;
-  }
-  .sidebar{
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 240px;
-    background: #000000;
-    padding: 6px 14px;
-  }
-  .sidebar .logo_content .logo{
-    color: #FFFFFF;
+/* Add styles for main content */
+body {
     display: flex;
-    height: 50px;
-    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #3b3e41;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s;
+    overflow: hidden;
+}
+
+.sidebar.closed {
+    width: 70px;
+}
+
+.logo_content {
+    display: flex;
     align-items: center;
-  }
-  .logo_content .logo i{
-    font-size: 28px;
-    margin-right: 5px;
-  }
-  .logo_content .logo .logo_name{
-    font-size: 20px;
-    font-weight: 400;
-  }
-  .sidebar #btn{
-    position: absolute;
-    color: #FFFFFF;
-    left: 90%;
-    top: 6px;
-    font-size: 20px;
-    height: 50px;
-    width: 50px;
-    text-align: center;
-    line-height: 50px;
-    transform: translateX(-50%);
-  }
-  .sidebar ul{
-    margin-top: 20px;
-  }
-  .sidebar ul li{
-    position: relative;
-    height: 50px;
-    width: 100%;
-    margin: 0 5 px;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.logo_name {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav_list {
     list-style: none;
-    line-height: 50px;
-  }
-  .sidebar ul li input{
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    left: 0;
-    top: 0;
-    border-radius: 12px;
-    outline: none;
-    border: none;
-    background: #1d1b31;
-    padding-left: 50px;
-    font-size:18px;
-    color: #FFFFFF;
-  }
-  .sidebar ul li .bx-search{
-    position: relative;
-    z-index: 99;
-    color: #FFFFFF;
-    font-size: 22px;
-  }
-  .sidebar ul li a{
-    color:#FFFFFF;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.nav_list li {
+    display: flex;
+    align-items: center;
+}
+
+.nav_list a {
     display: flex;
     align-items: center;
     text-decoration: none;
-    transition: all 0.4s ease;
-    border-radius: 12px;
-  }
-  .sidebar ul li a:hover{
-    color: #000000;
-    background: #FFFFFF;
-  }
-  .sidebar ul li i{
-    height: 50px;
-    min-width: 50px;
-    border-radius: 12px;
-    line-height: 50px;
-    text-align: center;
-  }
-  #log_out{
-    position: absolute;
-    color: #FFFFFF;
-    left: 88%;
-    bottom: 5px;
-    transform: translateX(-50%);
-    min-width: 50px;
-    line-height: 50px;
-    font-size: 20px;
-    border-radius: 12px;
-  }
-  /* Closed sidebar styling */
-.sidebar.closed {
-    width: 80px; /* Adjust based on your icon size */
-  }
-  
-  .sidebar.closed .logo .logo_name, 
-  .sidebar.closed .nav_list .links_name {
-    display: none; /* Hide the text */
-  }
-  
-  .sidebar.closed .nav_list li input {
-    display: none; /* Hide the search input */
-  }
-  
-  .sidebar.closed i {
-    text-align: center; /* Center align the icons */
-  }
-  
-  /* Adjust the button position for the closed sidebar */
-  .sidebar.closed #btn {
-    left: 50%; /* Center the toggle button */
-    transform: translateX(-50%);
-  }
-  .sidebar.closed #log_out {
-    left: 50%; /* Center the toggle button */
-    transform: translateX(-50%);
-  }
-  .sidebar.closed .nav_list a {
-    position: relative;
-  }
-  
-  /* Tooltip styling */
-  .sidebar.closed .nav_list a:hover::after {
-    content: attr(data-tooltip); /* Display the tooltip text */
-    position: absolute;
-    left: 60px; /* Adjust position next to the icon */
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: #ffffff;
-    color: #000000;
-    font-size: 12px;
-    padding: 5px 10px;
-    border-radius: 5px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    color: white;
+    padding: 10px 15px;
+    width: 100%;
+    transition: background 0.3s ease;
+}
+
+.nav_list a:hover {
+    background-color: #0056b3;
+}
+
+.nav_list a i {
+    font-size: 1.5rem;
+    margin-right: 10px;
+}
+
+.nav_list a span {
+    font-size: 1rem;
     white-space: nowrap;
-    z-index: 10;
-    opacity: 1;
-    pointer-events: none; /* Prevent tooltip blocking interactions */
-    transition: opacity 0.2s ease, transform 0.2s ease;
-  }
-  
-  .sidebar ul li a:hover .bx-search {
-    color: #000000; /* Ensure search icon stays black */
-  }
-  
-  /* Hide tooltip if not hovered */
-  .sidebar .nav_list a::after {
-    opacity: 0;
-    transform: translateY(-50%) scale(0.9);
-    transition: opacity 0.2s ease, transform 0.2s ease;
-  }
+}
+
+#log_out {
+    font-size: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    margin: 20px;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+#log_out:hover {
+    color: #ff4d4d;
+}
+
+.main_content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+.main_content h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.stat_card {
+    background-color: #3b3e41;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    flex: 1;
+    margin: 0 10px;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat_card h2 {
+    font-size: 2.5rem;
+}
+
+.stat_card p {
+    font-size: 1rem;
+}
+
+.tool_links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.tool_links a {
+    flex: 1;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    background-color: #4665fe;
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.tool_links a:hover {
+    background-color: #4665fe;
+}
+
   
