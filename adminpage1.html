@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin Page</title>
+        <link rel="stylesheet" href="admin/adminstyle1.css">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    </head>
+    <body>
+        <div class="sidebar">
+            <div class="logo_content">
+                <div class="logo">
+                    <div class="logo_name">KTM</div>
+                </div>
+                <i class='bx bx-menu' id="btn"></i>
+            </div>
+            <ul class="nav_list">
+                <li>
+                    <a href="#" data-tooltip="Search">
+                        <i class='bx bx-search'></i>
+                        <input type="text" placeholder="Search...">
+                    </a>
+                </li>
+                <li>
+                    <a href="#" data-tooltip="Dashboard">
+                        <i class='bx bx-grid-alt'></i>
+                        <span class="links_name">Dashboard</span>
+                    </a>  
+                </li> 
+                <li>                
+                    <a href="#" data-tooltip="Navigation">
+                        <i class='bx bx-grid-alt'></i>
+                        <span class="links_name">Navigation</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" data-tooltip="Navigation">
+                        <i class='bx bx-grid-alt'></i>
+                        <span class="links_name">Navigation</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" data-tooltip="Navigation">
+                        <i class='bx bx-grid-alt'></i>
+                        <span class="links_name">Navigation</span>
+                    </a>
+                </li>
+            </ul>
+            <i class='bx bx-log-out' id="log_out"></i>
+        </div>
+
+    <script>
+        const sidebar = document.querySelector(".sidebar");
+        const toggleBtn = document.querySelector("#btn");
+
+        toggleBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("closed"); // Toggle the 'closed' class
+        });
+    </script>
+    </body>    
+</html>
