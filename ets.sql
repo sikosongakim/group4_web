@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 08, 2024 at 01:36 PM
+-- Generation Time: Dec 08, 2024 at 05:25 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `admin` (
-  `admin` int(11) NOT NULL,
+  `admin_id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -37,7 +37,7 @@ CREATE TABLE `admin` (
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`admin`, `username`, `password`) VALUES
+INSERT INTO `admin` (`admin_id`, `username`, `password`) VALUES
 (1, 'admin', 'admin');
 
 -- --------------------------------------------------------
@@ -67,6 +67,16 @@ CREATE TABLE `schedules` (
   `shift` enum('5:00-11:00','11:00-17:00','17:00-23:00') NOT NULL,
   `status` enum('Scheduled','On Leave') DEFAULT 'Scheduled'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `schedules`
+--
+
+INSERT INTO `schedules` (`schedule_id`, `staff_id`, `work_date`, `shift`, `status`) VALUES
+(2, 1, '2024-12-15', '5:00-11:00', 'Scheduled'),
+(3, 2, '2024-12-16', '11:00-17:00', 'Scheduled'),
+(4, 3, '2024-12-17', '17:00-23:00', 'Scheduled'),
+(5, 1, '2024-12-08', '5:00-11:00', 'Scheduled');
 
 -- --------------------------------------------------------
 
@@ -107,7 +117,9 @@ CREATE TABLE `staff` (
 --
 
 INSERT INTO `staff` (`staff_id`, `first_name`, `last_name`, `email`, `password`, `gender`, `position`, `shift`, `off_day`) VALUES
-(1, 'John', 'Doe', 'johndoe@example.com', 'hashed_password_here', 'Male', 'Driver', '5:00-11:00', 1);
+(1, 'John', 'Doe', 'john.doe@example.com', 'password123', 'Male', 'Driver', '5:00-11:00', 0),
+(2, 'Jane', 'Smith', 'jane.smith@example.com', 'password456', 'Female', 'Stewardess', '11:00-17:00', 1),
+(3, 'Alice', 'Johnson', 'alice.johnson@example.com', 'password789', 'Female', 'Customer Service', '17:00-23:00', 0);
 
 --
 -- Indexes for dumped tables
@@ -117,7 +129,7 @@ INSERT INTO `staff` (`staff_id`, `first_name`, `last_name`, `email`, `password`,
 -- Indexes for table `admin`
 --
 ALTER TABLE `admin`
-  ADD PRIMARY KEY (`admin`),
+  ADD PRIMARY KEY (`admin_id`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
@@ -156,7 +168,7 @@ ALTER TABLE `staff`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `leave_requests`
@@ -168,7 +180,7 @@ ALTER TABLE `leave_requests`
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `schedule_change_requests`
@@ -180,7 +192,7 @@ ALTER TABLE `schedule_change_requests`
 -- AUTO_INCREMENT for table `staff`
 --
 ALTER TABLE `staff`
-  MODIFY `staff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `staff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
