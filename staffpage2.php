@@ -47,31 +47,84 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
+    <link rel="stylesheet" href="staff/staffstyle1.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
 </head>
 <body>
-    <h2>Edit Profile</h2>
-    <form method="POST" action="staffpage2.php">
-        <label for="first_name">First Name: </label>
-        <input type="text" name="first_name" value="<?php echo $staff['first_name']; ?>" required>
-        <label for="last_name">Last Name: </label>
-        <input type="text" name="last_name" value="<?php echo $staff['last_name']; ?>" required>
-        <label for="email">Email: </label>
-        <input type="email" name="email" value="<?php echo $staff['email']; ?>" required>
-        <label for="gender">Gender: </label>
-        <select name="gender">
-            <option value="Male" <?php if ($staff['gender'] == 'Male') echo 'selected'; ?>>Male</option>
-            <option value="Female" <?php if ($staff['gender'] == 'Female') echo 'selected'; ?>>Female</option>
-            <option value="Other" <?php if ($staff['gender'] == 'Other') echo 'selected'; ?>>Other</option>
-        </select>
-        <label for="position">Position: </label>
-        <select name="position">
-            <option value="Driver" <?php if ($staff['position'] == 'Driver') echo 'selected'; ?>>Driver</option>
-            <option value="Stewardess" <?php if ($staff['position'] == 'Stewardess') echo 'selected'; ?>>Stewardess</option>
-            <option value="Customer Service" <?php if ($staff['position'] == 'Customer Service') echo 'selected'; ?>>Customer Service</option>
-        </select>
-        <label for="shift">Shift: </label>
-        <input type="text" name="shift" value="<?php echo $staff['shift']; ?>" required>
-        <button type="submit">Update Profile</button>
-    </form>
+    
+        <!-- Yellow Header -->
+        <header class="header yellow-header">
+        <div class="logo">
+            <img src="ktm.png" alt="Logo">
+        </div>
+        <nav class="navbar">
+            <a href="staffpage1.php">Home</a>
+            <a href="staffpage3.php">View Schedule</a>
+            <a href="staffpage4.php">Change Schedule</a>
+            <a href="staffpage5.php">Request Leave</a>
+            <div class="profile-dropdown">
+                <a href="#profile" class="profile-icon">
+                    <i class="fas fa-user"></i> <!-- User icon -->
+                </a>
+                <div class="dropdown-menu">
+                    <a href="staffpage2.php">Profile</a> <!-- Link to edit profile -->
+                    <a href="stafflogout.php">Log Out</a> <!-- Log out link -->
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Red Header -->
+    <header class="header red-header"></header>
+
+    <!-- Train Background -->
+    <div class="train-background">
+        <img src="train.jpg" alt="Train">
+    </div>
+
+    <!-- Profile Form -->
+    <div class="profile-form-container">
+        <h2>Edit Profile</h2>
+        <form method="POST" action="staffpage2.php">
+            <label for="first_name">First Name: </label>
+            <input type="text" name="first_name" value="<?php echo $staff['first_name']; ?>" required>
+            
+            <label for="last_name">Last Name: </label>
+            <input type="text" name="last_name" value="<?php echo $staff['last_name']; ?>" required>
+            
+            <label for="email">Email: </label>
+            <input type="email" name="email" value="<?php echo $staff['email']; ?>" required>
+            
+            <label for="gender">Gender: </label>
+            <select name="gender">
+                <option value="Male" <?php if ($staff['gender'] == 'Male') echo 'selected'; ?>>Male</option>
+                <option value="Female" <?php if ($staff['gender'] == 'Female') echo 'selected'; ?>>Female</option>
+                <option value="Other" <?php if ($staff['gender'] == 'Other') echo 'selected'; ?>>Other</option>
+            </select>
+
+            <label for="position">Position: </label>
+            <select name="position">
+                <option value="Driver" <?php if ($staff['position'] == 'Driver') echo 'selected'; ?>>Driver</option>
+                <option value="Stewardess" <?php if ($staff['position'] == 'Stewardess') echo 'selected'; ?>>Stewardess</option>
+                <option value="Customer Service" <?php if ($staff['position'] == 'Customer Service') echo 'selected'; ?>>Customer Service</option>
+            </select>
+
+
+            
+            <button type="submit">Update Profile</button>
+        </form>
+    </div>
+
+    <!-- Blue Footer -->
+    <footer class="blue-footer">
+        <div class="footer-content">
+            <p>&copy; 2024 ETS Staff Schedule. All rights reserved.</p>
+            <nav class="footer-links">
+                <a href="#Add navigation">Navigation</a>
+                <a href="#Add navigation">Navigation</a>
+                <a href="#Add navigation">Navigation</a>
+            </nav>
+        </div>
+    </footer>
 </body>
 </html>

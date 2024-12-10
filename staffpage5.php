@@ -1,9 +1,9 @@
 <?php
-session_start(); // Start the session
+session_start();  // Start the session
 
 // Check if staff is logged in
 if (!isset($_SESSION['staff_id'])) {
-    // Redirect to login if not logged in
+    // If not logged in, redirect to login page
     header('Location: stafflogin.php');
     exit();
 }
@@ -11,14 +11,21 @@ if (!isset($_SESSION['staff_id'])) {
 // Include database configuration
 include('config.php');
 
-// Get the logged-in staff ID
+// Get the logged-in staff's ID
 $staff_id = $_SESSION['staff_id'];
 
-// Get today's schedule for the logged-in staff
-$stmt = $conn->prepare("SELECT * FROM schedules WHERE staff_id = ? ORDER BY work_date DESC");
-$stmt->bind_param("i", $staff_id);
-$stmt->execute();
-$result = $stmt->get_result();
+// If form is submitted
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $leave_date = $_POST['leave_date']; // Leave date requested
+    $reason = $_POST['reason']; // Reason for leave
+
+    // Insert the leave request into the leave_requests table
+    $stmt = $conn->prepare("INSERT INTO leave_requests (staff_id, leave_date, reason, status) VALUES (?, ?, ?, 'Pending')");
+    $stmt->bind_param("iss", $staff_id, $leave_date, $reason);
+    $stmt->execute();
+
+    $message = "Leave request submitted successfully.";
+}
 ?>
 
 <!DOCTYPE html>
@@ -26,14 +33,13 @@ $result = $stmt->get_result();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Staff Schedule</title>
+    <title>Request Leave</title>
     <link rel="stylesheet" href="staff/staffstyle1.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
-
 </head>
 <body>
-       <!-- Yellow Header -->
-       <header class="header yellow-header">
+    <!-- Yellow Header -->
+    <header class="header yellow-header">
         <div class="logo">
             <img src="ktm.png" alt="Logo">
         </div>
@@ -62,28 +68,21 @@ $result = $stmt->get_result();
         <img src="train.jpg" alt="Train">
     </div>
 
-    <!-- Schedule Table Section (Centered) -->
-    <div class="schedule-container">
-        <h2>Your Schedule</h2>
+    <!-- Leave Request Form -->
+    <div class="schedule-status">
+        <h2>Request Leave</h2>
+        
+        <?php if (isset($message)) echo "<p style='color:green;'>$message</p>"; ?>
 
-        <?php if ($result->num_rows > 0): ?>
-            <table class="schedule-table">
-                <tr>
-                    <th>Work Date</th>
-                    <th>Shift</th>
-                    <th>Status</th>
-                </tr>
-                <?php while ($row = $result->fetch_assoc()): ?>
-                    <tr>
-                        <td><?php echo $row['work_date']; ?></td>
-                        <td><?php echo $row['shift']; ?></td>
-                        <td><?php echo $row['status']; ?></td>
-                    </tr>
-                <?php endwhile; ?>
-            </table>
-        <?php else: ?>
-            <p>No schedule found for today.</p>
-        <?php endif; ?>
+        <form method="POST" action="staffpage5.php">
+            <label for="leave_date">Leave Date:</label>
+            <input type="date" name="leave_date" required><br>
+
+            <label for="reason">Reason for Leave:</label>
+            <textarea name="reason" rows="4" required></textarea><br>
+
+            <button type="submit">Submit Leave Request</button>
+        </form>
     </div>
 
     <!-- Blue Footer -->
@@ -97,6 +96,6 @@ $result = $stmt->get_result();
             </nav>
         </div>
     </footer>
-
 </body>
 </html>
+
