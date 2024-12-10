@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 10, 2024 at 07:20 AM
+-- Generation Time: Dec 10, 2024 at 05:56 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -66,20 +66,19 @@ CREATE TABLE `schedules` (
   `staff_id` int(11) NOT NULL,
   `work_date` date NOT NULL,
   `shift` enum('5:00-11:00','11:00-17:00','17:00-23:00') NOT NULL,
-  `status` enum('Scheduled','On Leave') DEFAULT 'Scheduled',
-  `admin_id` int(11) DEFAULT NULL
+  `status` enum('Scheduled','On Leave') DEFAULT 'Scheduled'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `schedules`
 --
 
-INSERT INTO `schedules` (`schedule_id`, `staff_id`, `work_date`, `shift`, `status`, `admin_id`) VALUES
-(2, 1, '2024-12-15', '5:00-11:00', 'Scheduled', NULL),
-(3, 2, '2024-12-16', '11:00-17:00', 'Scheduled', NULL),
-(4, 3, '2024-12-17', '17:00-23:00', 'Scheduled', NULL),
-(5, 1, '2024-12-08', '5:00-11:00', 'Scheduled', NULL),
-(6, 1, '2024-12-09', '5:00-11:00', 'Scheduled', NULL);
+INSERT INTO `schedules` (`schedule_id`, `staff_id`, `work_date`, `shift`, `status`) VALUES
+(2, 1, '2024-12-15', '5:00-11:00', 'Scheduled'),
+(3, 2, '2024-12-16', '11:00-17:00', 'Scheduled'),
+(4, 3, '2024-12-17', '17:00-23:00', 'Scheduled'),
+(5, 1, '2024-12-08', '5:00-11:00', 'Scheduled'),
+(6, 1, '2024-12-09', '5:00-11:00', 'Scheduled');
 
 -- --------------------------------------------------------
 
