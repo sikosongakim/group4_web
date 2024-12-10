@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 08, 2024 at 05:25 PM
+-- Generation Time: Dec 10, 2024 at 07:20 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -47,11 +47,12 @@ INSERT INTO `admin` (`admin_id`, `username`, `password`) VALUES
 --
 
 CREATE TABLE `leave_requests` (
-  `request_id` int(11) NOT NULL,
+  `leave_request_id` int(11) NOT NULL,
   `staff_id` int(11) NOT NULL,
   `leave_date` date NOT NULL,
   `status` enum('Pending','Approved','Rejected') DEFAULT 'Pending',
-  `reason` text DEFAULT NULL
+  `reason` text DEFAULT NULL,
+  `admin_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -65,18 +66,20 @@ CREATE TABLE `schedules` (
   `staff_id` int(11) NOT NULL,
   `work_date` date NOT NULL,
   `shift` enum('5:00-11:00','11:00-17:00','17:00-23:00') NOT NULL,
-  `status` enum('Scheduled','On Leave') DEFAULT 'Scheduled'
+  `status` enum('Scheduled','On Leave') DEFAULT 'Scheduled',
+  `admin_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `schedules`
 --
 
-INSERT INTO `schedules` (`schedule_id`, `staff_id`, `work_date`, `shift`, `status`) VALUES
-(2, 1, '2024-12-15', '5:00-11:00', 'Scheduled'),
-(3, 2, '2024-12-16', '11:00-17:00', 'Scheduled'),
-(4, 3, '2024-12-17', '17:00-23:00', 'Scheduled'),
-(5, 1, '2024-12-08', '5:00-11:00', 'Scheduled');
+INSERT INTO `schedules` (`schedule_id`, `staff_id`, `work_date`, `shift`, `status`, `admin_id`) VALUES
+(2, 1, '2024-12-15', '5:00-11:00', 'Scheduled', NULL),
+(3, 2, '2024-12-16', '11:00-17:00', 'Scheduled', NULL),
+(4, 3, '2024-12-17', '17:00-23:00', 'Scheduled', NULL),
+(5, 1, '2024-12-08', '5:00-11:00', 'Scheduled', NULL),
+(6, 1, '2024-12-09', '5:00-11:00', 'Scheduled', NULL);
 
 -- --------------------------------------------------------
 
@@ -85,13 +88,14 @@ INSERT INTO `schedules` (`schedule_id`, `staff_id`, `work_date`, `shift`, `statu
 --
 
 CREATE TABLE `schedule_change_requests` (
-  `request_id` int(11) NOT NULL,
+  `change_request_id` int(11) NOT NULL,
   `staff_id` int(11) NOT NULL,
   `current_shift` enum('5:00-11:00','11:00-17:00','17:00-23:00') NOT NULL,
   `new_shift` enum('5:00-11:00','11:00-17:00','17:00-23:00') NOT NULL,
   `request_date` date NOT NULL,
   `status` enum('Pending','Approved','Rejected') DEFAULT 'Pending',
-  `reason` text DEFAULT NULL
+  `reason` text DEFAULT NULL,
+  `admin_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -109,17 +113,18 @@ CREATE TABLE `staff` (
   `gender` enum('Male','Female','Other') NOT NULL,
   `position` enum('Driver','Stewardess','Customer Service') NOT NULL,
   `shift` enum('5:00-11:00','11:00-17:00','17:00-23:00') NOT NULL,
-  `off_day` tinyint(1) DEFAULT 0
+  `off_day` tinyint(1) DEFAULT 0,
+  `admin_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `staff`
 --
 
-INSERT INTO `staff` (`staff_id`, `first_name`, `last_name`, `email`, `password`, `gender`, `position`, `shift`, `off_day`) VALUES
-(1, 'John', 'Doe', 'john.doe@example.com', 'password123', 'Male', 'Driver', '5:00-11:00', 0),
-(2, 'Jane', 'Smith', 'jane.smith@example.com', 'password456', 'Female', 'Stewardess', '11:00-17:00', 1),
-(3, 'Alice', 'Johnson', 'alice.johnson@example.com', 'password789', 'Female', 'Customer Service', '17:00-23:00', 0);
+INSERT INTO `staff` (`staff_id`, `first_name`, `last_name`, `email`, `password`, `gender`, `position`, `shift`, `off_day`, `admin_id`) VALUES
+(1, 'John', 'Doe', 'john.doe@example.com', 'password123', 'Male', 'Driver', '5:00-11:00', 0, NULL),
+(2, 'Jane', 'Smith', 'jane.smith@example.com', 'password456', 'Female', 'Stewardess', '11:00-17:00', 1, NULL),
+(3, 'Alice', 'Johnson', 'alice.johnson@example.com', 'password789', 'Female', 'Customer Service', '17:00-23:00', 0, NULL);
 
 --
 -- Indexes for dumped tables
@@ -136,8 +141,9 @@ ALTER TABLE `admin`
 -- Indexes for table `leave_requests`
 --
 ALTER TABLE `leave_requests`
-  ADD PRIMARY KEY (`request_id`),
-  ADD KEY `staff_id` (`staff_id`);
+  ADD PRIMARY KEY (`leave_request_id`),
+  ADD KEY `staff_id` (`staff_id`),
+  ADD KEY `fk_leave_admin_id` (`admin_id`);
 
 --
 -- Indexes for table `schedules`
@@ -150,15 +156,17 @@ ALTER TABLE `schedules`
 -- Indexes for table `schedule_change_requests`
 --
 ALTER TABLE `schedule_change_requests`
-  ADD PRIMARY KEY (`request_id`),
-  ADD KEY `staff_id` (`staff_id`);
+  ADD PRIMARY KEY (`change_request_id`),
+  ADD KEY `staff_id` (`staff_id`),
+  ADD KEY `fk_schedule_admin_id` (`admin_id`);
 
 --
 -- Indexes for table `staff`
 --
 ALTER TABLE `staff`
   ADD PRIMARY KEY (`staff_id`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `fk_admin_id` (`admin_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -174,19 +182,19 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `leave_requests`
 --
 ALTER TABLE `leave_requests`
-  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `leave_request_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `schedule_change_requests`
 --
 ALTER TABLE `schedule_change_requests`
-  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `change_request_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `staff`
@@ -202,6 +210,7 @@ ALTER TABLE `staff`
 -- Constraints for table `leave_requests`
 --
 ALTER TABLE `leave_requests`
+  ADD CONSTRAINT `fk_leave_admin_id` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`),
   ADD CONSTRAINT `leave_requests_ibfk_1` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`staff_id`);
 
 --
@@ -214,7 +223,14 @@ ALTER TABLE `schedules`
 -- Constraints for table `schedule_change_requests`
 --
 ALTER TABLE `schedule_change_requests`
+  ADD CONSTRAINT `fk_schedule_admin_id` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`),
   ADD CONSTRAINT `schedule_change_requests_ibfk_1` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`staff_id`);
+
+--
+-- Constraints for table `staff`
+--
+ALTER TABLE `staff`
+  ADD CONSTRAINT `fk_admin_id` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
