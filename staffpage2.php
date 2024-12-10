@@ -64,7 +64,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <option value="Other" <?php if ($staff['gender'] == 'Other') echo 'selected'; ?>>Other</option>
         </select>
         <label for="position">Position: </label>
-        <input type="text" name="position" value="<?php echo $staff['position']; ?>" required>
+        <select name="position">
+            <option value="Driver" <?php if ($staff['position'] == 'Driver') echo 'selected'; ?>>Driver</option>
+            <option value="Stewardess" <?php if ($staff['position'] == 'Stewardess') echo 'selected'; ?>>Stewardess</option>
+            <option value="Customer Service" <?php if ($staff['position'] == 'Customer Service') echo 'selected'; ?>>Customer Service</option>
+        </select>
         <label for="shift">Shift: </label>
         <input type="text" name="shift" value="<?php echo $staff['shift']; ?>" required>
         <button type="submit">Update Profile</button>
