@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Admin Login</title>
     <link rel="stylesheet" href="admin/adminstyle1.css">
 </head>
-<body>
+<body class="login-page">
     <div class="login-container">
         <h1>Admin Login</h1>
         <?php if (isset($error)) { echo "<p style='color:red;'>$error</p>"; } ?>
