@@ -51,9 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
 </head>
 <body>
-    
-        <!-- Yellow Header -->
-        <header class="header yellow-header">
+
+    <!-- Yellow Header -->
+    <header class="header yellow-header">
         <div class="logo">
             <img src="ktm.png" alt="Logo">
         </div>
@@ -82,35 +82,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <img src="train.jpg" alt="Train">
     </div>
 
-    <!-- Profile Form -->
-    <div class="profile-form-container">
+    <!-- Profile Form Section (Centered) -->
+    <div class="schedule-container profile-form-container">
         <h2>Edit Profile</h2>
         <form method="POST" action="staffpage2.php">
-            <label for="first_name">First Name: </label>
-            <input type="text" name="first_name" value="<?php echo $staff['first_name']; ?>" required>
-            
-            <label for="last_name">Last Name: </label>
-            <input type="text" name="last_name" value="<?php echo $staff['last_name']; ?>" required>
-            
-            <label for="email">Email: </label>
-            <input type="email" name="email" value="<?php echo $staff['email']; ?>" required>
-            
-            <label for="gender">Gender: </label>
-            <select name="gender">
-                <option value="Male" <?php if ($staff['gender'] == 'Male') echo 'selected'; ?>>Male</option>
-                <option value="Female" <?php if ($staff['gender'] == 'Female') echo 'selected'; ?>>Female</option>
-                <option value="Other" <?php if ($staff['gender'] == 'Other') echo 'selected'; ?>>Other</option>
-            </select>
+            <table class="status-table">
+                <tr>
+                    <td><label for="first_name">First Name: </label></td>
+                    <td><input type="text" name="first_name" value="<?php echo $staff['first_name']; ?>" required></td>
+                </tr>
+                <tr>
+                    <td><label for="last_name">Last Name: </label></td>
+                    <td><input type="text" name="last_name" value="<?php echo $staff['last_name']; ?>" required></td>
+                </tr>
+                <tr>
+                    <td><label for="email">Email: </label></td>
+                    <td><input type="email" name="email" value="<?php echo $staff['email']; ?>" required></td>
+                </tr>
+                <tr>
+                    <td><label for="gender">Gender: </label></td>
+                    <td>
+                        <select name="gender">
+                            <option value="Male" <?php if ($staff['gender'] == 'Male') echo 'selected'; ?>>Male</option>
+                            <option value="Female" <?php if ($staff['gender'] == 'Female') echo 'selected'; ?>>Female</option>
+                            <option value="Other" <?php if ($staff['gender'] == 'Other') echo 'selected'; ?>>Other</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="position">Position: </label></td>
+                    <td>
+                        <select name="position">
+                            <option value="Driver" <?php if ($staff['position'] == 'Driver') echo 'selected'; ?>>Driver</option>
+                            <option value="Stewardess" <?php if ($staff['position'] == 'Stewardess') echo 'selected'; ?>>Stewardess</option>
+                            <option value="Customer Service" <?php if ($staff['position'] == 'Customer Service') echo 'selected'; ?>>Customer Service</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="shift">Shift: </label></td>
+                    <td>
+                        <input type="text" name="shift" value="<?php echo $staff['shift']; ?>" required>
+                    </td>
+                </tr>
+            </table>
 
-            <label for="position">Position: </label>
-            <select name="position">
-                <option value="Driver" <?php if ($staff['position'] == 'Driver') echo 'selected'; ?>>Driver</option>
-                <option value="Stewardess" <?php if ($staff['position'] == 'Stewardess') echo 'selected'; ?>>Stewardess</option>
-                <option value="Customer Service" <?php if ($staff['position'] == 'Customer Service') echo 'selected'; ?>>Customer Service</option>
-            </select>
-
-
-            
             <button type="submit">Update Profile</button>
         </form>
     </div>
@@ -126,5 +142,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </nav>
         </div>
     </footer>
+
 </body>
 </html>

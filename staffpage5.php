@@ -16,12 +16,13 @@ $staff_id = $_SESSION['staff_id'];
 
 // If form is submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $leave_date = $_POST['leave_date']; // Leave date requested
+    $start_date = $_POST['start_date']; // Start date for leave
+    $end_date = $_POST['end_date']; // End date for leave
     $reason = $_POST['reason']; // Reason for leave
 
     // Insert the leave request into the leave_requests table
-    $stmt = $conn->prepare("INSERT INTO leave_requests (staff_id, leave_date, reason, status) VALUES (?, ?, ?, 'Pending')");
-    $stmt->bind_param("iss", $staff_id, $leave_date, $reason);
+    $stmt = $conn->prepare("INSERT INTO leave_requests (staff_id, start_date, end_date, reason, leave_status) VALUES (?, ?, ?, ?, 'Pending')");
+    $stmt->bind_param("isss", $staff_id, $start_date, $end_date, $reason);
     $stmt->execute();
 
     $message = "Leave request submitted successfully.";
@@ -75,8 +76,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <?php if (isset($message)) echo "<p style='color:green;'>$message</p>"; ?>
 
         <form method="POST" action="staffpage5.php">
-            <label for="leave_date">Leave Date:</label>
-            <input type="date" name="leave_date" required><br>
+            <label for="start_date">Leave Start Date:</label>
+            <input type="date" name="start_date" required><br>
+
+            <label for="end_date">Leave End Date:</label>
+            <input type="date" name="end_date" required><br>
 
             <label for="reason">Reason for Leave:</label>
             <textarea name="reason" rows="4" required></textarea><br>
@@ -98,4 +102,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </footer>
 </body>
 </html>
-

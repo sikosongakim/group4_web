@@ -40,7 +40,7 @@ if (isset($_GET['logout'])) {
                     </a>  
                 </li> 
                 <li>                
-                    <a href="#manage-staff-page" data-tooltip="Manage Staff">
+                    <a href="adminpage2.php" data-tooltip="Manage Staff"> <!-- Update href here -->
                         <i class='bx bx-user'></i>
                         <span class="links_name">Manage Staff</span>
                     </a>
@@ -51,21 +51,9 @@ if (isset($_GET['logout'])) {
                         <span class="links_name">Manage Schedules</span>
                     </a>
                 </li>
-                <li>
-                    <a href="adminpage4.php" data-tooltip="Schedule Requests">
-                       <i class='bx bx-edit-alt'></i>
-                       <span class="links_name">Schedule Requests</span>
-                    </a>
-                </li>
-                <li>
-                <a href="adminpage5.php" data-tooltip="Leave Requests">
-                    <i class='bx bx-calendar-check'></i>
-                    <span class="links_name">Leave Requests</span>
-                </a>
-            </li>
             </ul>
             <a href="adminlogout.php" data-tooltip="Logout">
-            <i class='bx bx-log-out' id="log_out"></i>
+                <i class='bx bx-log-out' id="log_out"></i>
             </a>
         </div>
 

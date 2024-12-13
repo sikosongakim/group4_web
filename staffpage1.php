@@ -21,8 +21,8 @@ $stmt->execute();
 $result = $stmt->get_result();
 $staff = $result->fetch_assoc();
 
-// Query to get leave request status
-$leave_stmt = $conn->prepare("SELECT leave_date, status FROM leave_requests WHERE staff_id = ? ORDER BY leave_request_id DESC LIMIT 1");
+// Query to get leave request details and leave_status
+$leave_stmt = $conn->prepare("SELECT start_date, end_date, leave_status FROM leave_requests WHERE staff_id = ? ORDER BY leave_request_id DESC LIMIT 1");
 $leave_stmt->bind_param("i", $staff_id);
 $leave_stmt->execute();
 $leave_result = $leave_stmt->get_result();
@@ -81,16 +81,16 @@ $schedule_request = $schedule_result->fetch_assoc();
     <div class="schedule-status">
         <h2>Request Status</h2>
         
-        <!-- Table for Leave Request Status -->
+        <!-- Table for Leave Requests -->
         <table class="status-table">
             <tr>
-                <th>Leave Request Status</th>
-                <th>Leave Date</th>
+                <th>Leave Status</th>  <!-- Status column comes first -->
+                <th>Leave Dates</th>
             </tr>
             <?php if ($leave_request): ?>
             <tr>
-                <td><?php echo htmlspecialchars($leave_request['status']); ?></td>
-                <td><?php echo htmlspecialchars($leave_request['leave_date']); ?></td>
+                <td><?php echo htmlspecialchars($leave_request['leave_status']); ?></td>  <!-- Display leave_status -->
+                <td>From <?php echo htmlspecialchars($leave_request['start_date']); ?> to <?php echo htmlspecialchars($leave_request['end_date']); ?></td>
             </tr>
             <?php else: ?>
             <tr>

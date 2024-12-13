@@ -20,8 +20,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $gender = $_POST['gender'];
     $position = $_POST['position'];
     $shift = $_POST['shift'];
+    $off_day = $_POST['off_day']; // Get off_day value from form
 
-    $sql = "UPDATE staff SET first_name='$first_name', last_name='$last_name', email='$email', password='$password', gender='$gender', position='$position', shift='$shift' WHERE staff_id=$staff_id";
+    // Update SQL query to include off_day
+    $sql = "UPDATE staff SET first_name='$first_name', last_name='$last_name', email='$email', password='$password', gender='$gender', position='$position', shift='$shift', off_day='$off_day' WHERE staff_id=$staff_id";
     if ($conn->query($sql)) {
         header("Location: adminpage2.php");
     } else {
@@ -71,6 +73,17 @@ $staff = $conn->query("SELECT * FROM staff WHERE staff_id=$staff_id")->fetch_ass
                 <option value="5:00-11:00" <?php if ($staff['shift'] == '5:00-11:00') echo 'selected'; ?>>5:00-11:00</option>
                 <option value="11:00-17:00" <?php if ($staff['shift'] == '11:00-17:00') echo 'selected'; ?>>11:00-17:00</option>
                 <option value="17:00-23:00" <?php if ($staff['shift'] == '17:00-23:00') echo 'selected'; ?>>17:00-23:00</option>
+            </select>
+            <label>Off Day:</label>
+            <select name="off_day">
+                <option disabled selected value> -- Select off day -- </option>
+                <option value="Monday" <?php if ($staff['off_day'] == 'Monday') echo 'selected'; ?>>Monday</option>
+                <option value="Tuesday" <?php if ($staff['off_day'] == 'Tuesday') echo 'selected'; ?>>Tuesday</option>
+                <option value="Wednesday" <?php if ($staff['off_day'] == 'Wednesday') echo 'selected'; ?>>Wednesday</option>
+                <option value="Thursday" <?php if ($staff['off_day'] == 'Thursday') echo 'selected'; ?>>Thursday</option>
+                <option value="Friday" <?php if ($staff['off_day'] == 'Friday') echo 'selected'; ?>>Friday</option>
+                <option value="Saturday" <?php if ($staff['off_day'] == 'Saturday') echo 'selected'; ?>>Saturday</option>
+                <option value="Sunday" <?php if ($staff['off_day'] == 'Sunday') echo 'selected'; ?>>Sunday</option>
             </select>
             <input type="submit" value="Update Staff">
         </form>

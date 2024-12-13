@@ -14,8 +14,8 @@ include('config.php');
 // Get the logged-in staff ID
 $staff_id = $_SESSION['staff_id'];
 
-// Get today's schedule for the logged-in staff
-$stmt = $conn->prepare("SELECT * FROM schedules WHERE staff_id = ? ORDER BY work_date DESC");
+// Get today's schedule for the logged-in staff, including shift and off_day
+$stmt = $conn->prepare("SELECT shift, off_day FROM schedules WHERE staff_id = ? ORDER BY work_date DESC");
 $stmt->bind_param("i", $staff_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -29,11 +29,10 @@ $result = $stmt->get_result();
     <title>Staff Schedule</title>
     <link rel="stylesheet" href="staff/staffstyle1.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
-
 </head>
 <body>
-       <!-- Yellow Header -->
-       <header class="header yellow-header">
+    <!-- Yellow Header -->
+    <header class="header yellow-header">
         <div class="logo">
             <img src="ktm.png" alt="Logo">
         </div>
@@ -67,17 +66,15 @@ $result = $stmt->get_result();
         <h2>Your Schedule</h2>
 
         <?php if ($result->num_rows > 0): ?>
-            <table class="schedule-table">
+            <table class="status-table">
                 <tr>
-                    <th>Work Date</th>
                     <th>Shift</th>
-                    <th>Status</th>
+                    <th>Off Day</th>
                 </tr>
                 <?php while ($row = $result->fetch_assoc()): ?>
                     <tr>
-                        <td><?php echo $row['work_date']; ?></td>
-                        <td><?php echo $row['shift']; ?></td>
-                        <td><?php echo $row['status']; ?></td>
+                        <td><?php echo $row['shift']; ?></td> <!-- Display Shift -->
+                        <td><?php echo $row['off_day']; ?></td> <!-- Display Off Day -->
                     </tr>
                 <?php endwhile; ?>
             </table>

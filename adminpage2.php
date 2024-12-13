@@ -103,6 +103,7 @@ $staff_result = $conn->query($sql);
                     <th>Gender</th>
                     <th>Position</th>
                     <th>Shift</th>
+                    <th>Off Day</th> <!-- Add Off Day column -->
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -115,6 +116,7 @@ $staff_result = $conn->query($sql);
                         <td><?= $row['gender'] ?></td>
                         <td><?= $row['position'] ?></td>
                         <td><?= $row['shift'] ?></td>
+                        <td><?= $row['off_day'] ?></td> <!-- Display Off Day -->
                         <td>
                             <a href="adminpage2edit.php?staff_id=<?= $row['staff_id'] ?>">Edit</a> |
                             <a href="adminpage2delete.php?staff_id=<?= $row['staff_id'] ?>"
