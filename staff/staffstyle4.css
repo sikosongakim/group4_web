@@ -1,0 +1,226 @@
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+  }
+  
+  body {
+    min-height: 100vh; /* Ensure the body takes up at least the full height of the viewport */
+    background-color: whitesmoke;
+    overflow-x: hidden;
+  }
+  /* Yellow Header */
+  .yellow-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 35px 100px;
+    background: yellow;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+  }
+  
+  .header .logo {
+    position: relative;
+  }
+  
+  .header .logo img {
+    height: 60px;
+    width: auto;
+    position: absolute;
+    top: -30px;
+    left: 0;
+  }
+  
+  /* Red Header */
+  .red-header {
+    position: fixed;
+    top: 80px; /* Below yellow header */
+    left: 0;
+    width: 100%;
+    padding: 10px 100px;
+    background: red;
+    color: white;
+    text-align: center;
+    font-size: 14px;
+    z-index: 90;
+  }
+  
+  /* Navbar Styling */
+  .navbar a {
+    position: relative;
+    font-size: 18px;
+    color: black;
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 40px;
+  }
+  
+  .navbar a::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: black;
+    transition: .3s;
+  }
+  
+  .navbar a:hover::before {
+    width: 100%;
+  }
+  
+  /* Train Background */
+  .train-background {
+    position: relative; /* Ensure proper layout placement */
+    text-align: center;
+    margin-top: 20px; /* Add spacing below the red header */
+  }
+  
+  .train-background img {
+    width: 100%; /* Adjust to fit the container or screen */
+    height: auto; /* Maintain aspect ratio */
+    opacity: 0.2; /* Set 20% transparency */
+  }
+  /* Footer Styling */
+.blue-footer {
+    background-color: blue; /* Blue color */
+    color: white; /* White text for contrast */
+    text-align: center; /* Center align the content */
+    padding: 20px 0; /* Add vertical padding */
+    position: relative;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  .blue-footer .footer-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+    font-size: 14px;
+  }
+  
+  .blue-footer .footer-links a:hover {
+    text-decoration: underline;
+  }
+  /* Container for the dropdown menu */
+  .profile-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* Hide the dropdown menu by default */
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 22px; /* Adjust to align under the profile icon */
+    right: 3;
+    background-color: white;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    z-index: 1000;
+    text-align: left;
+    min-width: 100px;
+  }
+  
+  /* Dropdown menu items */
+  .dropdown-menu a {
+    color: black;
+    padding: 10px;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd; /* Add a separator between items */
+    text-align: left; /* Align text to the left */
+    margin: 0; /* Ensure no extra margin is added */
+  }
+  
+  /* Last item has no border */
+  .dropdown-menu a:last-child {
+    border-bottom: none;
+  }
+  
+  /* Hover effect for dropdown items */
+  .dropdown-menu a:hover {
+    background-color: #f1f1f1; /* Light gray */
+  }
+  
+  /* Show the dropdown menu on hover */
+  .profile-dropdown:hover .dropdown-menu {
+    display: block;
+  }
+
+  .container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 300px; /* Below the red header */
+    padding: 30px;
+    max-width: 900px;
+    width: 80%;
+    border-radius: 12px; /* Rounded corners */
+    margin: auto; /* Center horizontally and vertically */
+    position: absolute; /* For centering vertically */
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Adjust to perfectly center */
+  }
+  h1 {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center; /* Centers the text horizontally */
+    white-space: nowrap; /* Prevents text from breaking onto a new line */
+}
+
+  
+  .ques{
+    background-color: whitesmoke;
+    padding: 20px;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: black;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+  }
+  .ques:hover{
+    background-color: #d4d4d4;
+  }
+  .ans{
+    max-height: 0px;
+    width: 100%;
+    overflow: hidden;
+    transition: max-height .3s ease-in-out;
+  }
+  .faq i{
+    transition: all .3s ease-in-out;
+  }
+  .faq-list{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .faq.active .ans{
+    max-height: 300px;
+  }
+  .faq.active i{
+    transform: rotate(45deg);
+  }
+.ans p{
+    background-color: whitesmoke;
+    color: black;
+    padding: 30px;
+    font-size: 20px;
+    border-top: 1px solid #000;
+}
