@@ -88,9 +88,8 @@ $result = $stmt->get_result();
         <div class="footer-content">
             <p>&copy; 2024 ETS Staff Schedule. All rights reserved.</p>
             <nav class="footer-links">
-                <a href="#Add navigation">Navigation</a>
-                <a href="#Add navigation">Navigation</a>
-                <a href="#Add navigation">Navigation</a>
+            <a href="ScheduleFAQ.php">Staff Schedule FAQ</a>
+            <a href="LeaveFAQ.php">Staff Leave FAQ</a>
             </nav>
         </div>
     </footer>
