@@ -11,7 +11,7 @@ use OTPHP\TOTP;
 $error = "";
 $login_attempts_key = 'login_attempts';
 $max_attempts = 5;
-$lockout_time = 300; // 5 minutes
+$lockout_time = 100; // 5 minutes
 
 // Rate limiting: Check login attempts
 if (!isset($_SESSION[$login_attempts_key])) {
