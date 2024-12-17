@@ -2,7 +2,7 @@
 session_start(); // Start the session
 
 // Include database configuration
-include('config.php');
+include('db_connection.php');
 
 // Initialize error message
 $error = "";
@@ -13,29 +13,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $admin_username = htmlspecialchars(trim($_POST['admin_username']));
     $password = htmlspecialchars(trim($_POST['password']));
 
-    // Check the database for the admin
-    $stmt = $conn->prepare("SELECT * FROM admin WHERE username = ?");
-    $stmt->bind_param("s", $admin_username); // Bind the username
-    $stmt->execute();
-    $result = $stmt->get_result();
+    try {
+        // Prepare and execute the query to fetch the admin user
+        $stmt = $conn->prepare("SELECT * FROM admin WHERE username = :username");
+        $stmt->bindParam(':username', $admin_username);
+        $stmt->execute();
+        $admin = $stmt->fetch();
 
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
+        if ($admin) {
+            // Verify the password using password_verify()
+            if (password_verify($password, $admin['password'])) {
+                session_regenerate_id(true); // Prevent session fixation attacks
+                $_SESSION['admin_id'] = $admin['admin_id'];
+                $_SESSION['admin_name'] = $admin['username'];
 
-        // Verify the password
-        if (password_verify($password, $row['password'])) { // Use password_verify for hashed passwords
-            session_regenerate_id(true); // Prevent session fixation attacks
-            $_SESSION['admin_id'] = $row['admin_id'];
-            $_SESSION['admin_name'] = $row['username'];
-
-            // Redirect to admin dashboard
-            header('Location: adminpage1.php');
-            exit();
+                // Redirect to admin dashboard
+                header('Location: adminpage1.php');
+                exit();
+            } else {
+                $error = "Invalid username or password.";
+            }
         } else {
             $error = "Invalid username or password.";
         }
-    } else {
-        $error = "Invalid username or password.";
+    } catch (PDOException $e) {
+        $error = "Database error: " . $e->getMessage();
     }
 }
 ?>
@@ -48,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Admin Login</title>
     <link rel="stylesheet" href="admin/adminstyle2.css">
 </head>
-<body class="login-page">
+<body>
 <div class="train-background"></div>
     <div class="login-container">
         <h1>Admin Login</h1>
@@ -65,5 +67,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </body>
 </html>
+
 
 
