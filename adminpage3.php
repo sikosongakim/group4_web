@@ -105,7 +105,6 @@ $leaveRequestsResult = $leaveRequestsStmt->get_result();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Schedules</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link href="admin/adminstyle3.css" rel="stylesheet">
 </head>
 <body>
@@ -113,7 +112,7 @@ $leaveRequestsResult = $leaveRequestsStmt->get_result();
     <div class="sidebar">
         <div class="logo_content">
             <div class="logo">
-                <div class="logo_name">ETS</div>
+                <div class="logo_name">ADMIN</div>
             </div>
             <i class='bx bx-menu' id="btn"></i>
         </div>
@@ -125,16 +124,16 @@ $leaveRequestsResult = $leaveRequestsStmt->get_result();
                 </a>  
             </li>
             <li>
-                <a href="#manage-staff" data-tooltip="Manage Staff">
+                <a href="adminpage2.php" data-tooltip="Manage Staff">
                     <i class='bx bx-user'></i>
                     <span class="links_name">Manage Staff</span>
                 </a>
             </li>
             <li>
-                <a href="adminpage3.php" data-tooltip="Manage Schedules">
-                    <i class='bx bx-calendar'></i>
-                    <span class="links_name">Manage Schedules</span>
-                </a>
+                    <a href="adminpage3.php" data-tooltip="Manage Schedules">
+                        <i class='bx bx-calendar'></i>
+                        <span class="links_name">Manage Schedules</span>
+                    </a>
             </li>
         </ul>
         <a href="adminpage1.php?logout=true">
@@ -278,3 +277,4 @@ $leaveRequestsResult = $leaveRequestsStmt->get_result();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
+
