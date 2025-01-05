@@ -1,8 +1,8 @@
 <?php
-$servername = "localhost"; // Default MySQL server
-$username = "root";        // Default MySQL username
-$password = "";            // Default MySQL password (leave empty for XAMPP/WAMP)
-$dbname = "ets";           // Ensure this matches the database name in phpMyAdmin
+$servername = "localhost"; // Change if not using localhost
+$username = "root";        // Default username for XAMPP/WAMP
+$password = "";            // Default password (empty for XAMPP/WAMP)
+$dbname = "ets";           // Your database name
 
 try {
     // Create a MySQL database connection using PDO
@@ -13,5 +13,3 @@ try {
     die("Database connection failed: " . $e->getMessage());
 }
 ?>
-
-

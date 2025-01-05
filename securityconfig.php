@@ -46,10 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($_POST['action'] === 'enable_2fa') {
-        // Enable 2FA
         $user_code = $_POST['2fa_code'];
 
-        // Use the TOTP secret from the database
         $totp = TOTP::create($staff['totp_secret']);
         if ($totp->verify($user_code)) {
             $message = '<p style="color:green;">2FA has been enabled successfully.</p>';
@@ -59,7 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($_POST['action'] === 'disable_2fa') {
-        // Disable 2FA
         $stmt = $conn->prepare("UPDATE staff SET totp_secret = NULL WHERE staff_id = ?");
         $stmt->bind_param("i", $staff_id);
         $stmt->execute();
@@ -71,8 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if (empty($staff['totp_secret'])) {
     $totp = TOTP::create();
     $totp->setLabel($staff['email']); // Use the user's email
-    $totp->setIssuer('ETS Staff Schedule'); // App name
-    $totp_secret = $totp->getSecret(); // Generate the secret key
+    $totp->setIssuer('ETS Staff Schedule');
+    $totp_secret = $totp->getSecret();
 
     // Save the secret to the database
     $stmt = $conn->prepare("UPDATE staff SET totp_secret = ? WHERE staff_id = ?");
@@ -83,13 +80,14 @@ if (empty($staff['totp_secret'])) {
     $staff['totp_secret'] = $totp_secret;
 }
 
-// Build the QR code URL
+// Generate the QR code URL
 $totp = TOTP::create($staff['totp_secret']);
 $totp->setLabel($staff['email']);
 $totp->setIssuer('ETS Staff Schedule');
 $qr_code_url = $totp->getProvisioningUri(); // otpauth:// URL
 $qr_code_image = "https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=" . urlencode($qr_code_url);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -138,11 +136,11 @@ $qr_code_image = "https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr
                     <button type="submit">Disable 2FA</button>
                 </form>
             <?php else: ?>
-                <p>Scan the QR code below using Google Authenticator:</p>
-                <img src="<?php echo $qr_code_image; ?>" alt="2FA QR Code">
+                <p>2FA is not enabled. To enable 2FA, scan the QR code below using your authenticator app:</p>
+                <img src="<?php echo $qr_code_image; ?>" alt="QR Code">
                 <form method="POST">
                     <input type="hidden" name="action" value="enable_2fa">
-                    <label>Enter Code:</label>
+                    <label>Enter Code from App:</label>
                     <input type="text" name="2fa_code" required>
                     <button type="submit">Enable 2FA</button>
                 </form>

@@ -13,31 +13,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $staff_id = htmlspecialchars(trim($_POST['staff_id']));
     $password = htmlspecialchars(trim($_POST['password']));
 
-    try {
-        // Prepare and execute the query to fetch the staff user
-        $stmt = $conn->prepare("SELECT * FROM staff WHERE staff_id = :staff_id");
-        $stmt->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
-        $stmt->execute();
-        $staff = $stmt->fetch();
+    // Validate staff_id (ensure it's an integer)
+    if (!filter_var($staff_id, FILTER_VALIDATE_INT)) {
+        $error = "Invalid staff ID.";
+    } else {
+        try {
+            // Prepare and execute the query to fetch the staff user
+            $stmt = $conn->prepare("SELECT * FROM staff WHERE staff_id = :staff_id");
+            $stmt->bindParam(':staff_id', $staff_id, PDO::PARAM_INT);
+            $stmt->execute();
+            $staff = $stmt->fetch();
 
-        if ($staff) {
-            // Verify the password
-            if (password_verify($password, $staff['password'])) {
-                session_regenerate_id(true); // Prevent session fixation
-                $_SESSION['staff_id'] = $staff['staff_id'];
-                $_SESSION['staff_name'] = $staff['name']; // Optional: Add staff name
+            if ($staff) {
+                // Verify the password
+                if (password_verify($password, $staff['password'])) {
+                    session_regenerate_id(true); // Prevent session fixation
 
-                // Redirect to staff dashboard
-                header('Location: staffpage1.php');
-                exit();
+                    // Store staff data in the session
+                    $_SESSION['staff_id'] = $staff['staff_id'];
+                    $_SESSION['staff_name'] = $staff['first_name'] . ' ' . $staff['last_name']; // Optional: Full staff name
+
+                    // Redirect to staff dashboard
+                    header('Location: staffpage1.php');
+                    exit();
+                } else {
+                    $error = "Invalid credentials.";
+                }
             } else {
-                $error = "Invalid staff ID or password.";
+                $error = "Invalid credentials.";
             }
-        } else {
-            $error = "Invalid staff ID or password.";
+        } catch (PDOException $e) {
+            $error = "Database error: " . $e->getMessage();
         }
-    } catch (PDOException $e) {
-        $error = "Database error: " . $e->getMessage();
     }
 }
 ?>
@@ -57,14 +64,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if (!empty($error)) { echo "<p style='color:red;'>$error</p>"; } ?>
         <form action="stafflogin.php" method="POST" class="login-form">
             <label for="staff_id">Staff ID:</label>
-            <input type="text" name="staff_id" required placeholder="Enter your staff ID"><br>
-
+            <input type="text" name="staff_id" id="staff_id" required>
             <label for="password">Password:</label>
-            <input type="password" name="password" required placeholder="Enter your password"><br>
-
+            <input type="password" name="password" id="password" required>
             <button type="submit">Login</button>
         </form>
     </div>
 </body>
 </html>
-

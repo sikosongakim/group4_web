@@ -14,15 +14,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
     $email = $_POST['email'];
-    $password = $_POST['password'];
+    $password = $_POST['password'];  // Get the password from the form
     $gender = $_POST['gender'];
     $position = $_POST['position'];
     $shift = $_POST['shift'];
     $off_day = $_POST['off_day']; // Add the off_day from the form
 
-    // Insert staff into the staff table
+    // Hash the password
+    $hashed_password = password_hash($password, PASSWORD_BCRYPT);  // Hash the password
+
+    // Insert staff into the staff table with the hashed password
     $sql = "INSERT INTO staff (first_name, last_name, email, password, gender, position, shift) 
-            VALUES ('$first_name', '$last_name', '$email', '$password', '$gender', '$position', '$shift')";
+            VALUES ('$first_name', '$last_name', '$email', '$hashed_password', '$gender', '$position', '$shift')";
     
     if ($conn->query($sql)) {
         // Get the last inserted staff_id
