@@ -226,8 +226,8 @@ $leaveRequestsResult = $leaveRequestsStmt->get_result();
                                 <td>
                                     <form method="POST" action="adminpage3.php" style="display:inline;">
                                         <input type="hidden" name="request_id" value="<?php echo $row['request_id']; ?>">
-                                        <button type="submit" name="action" value="Approve">Approve</button>
-                                        <button type="submit" name="action" value="Reject">Reject</button>
+                                        <button type="submit" name="action" value="Approve" class="btn btn-success btn-sm">Approve</button>
+                                        <button type="submit" name="action" value="Reject" class="btn btn-danger btn-sm">Reject</button>
                                     </form>
                                 </td>
                             </tr>
@@ -261,8 +261,8 @@ $leaveRequestsResult = $leaveRequestsStmt->get_result();
                                 <td>
                                     <form method="POST" action="adminpage3.php" style="display:inline;">
                                         <input type="hidden" name="leave_request_id" value="<?php echo $row['leave_request_id']; ?>">
-                                        <button type="submit" name="action" value="Approved">Approve</button>
-                                        <button type="submit" name="action" value="Rejected">Reject</button>
+                                        <button type="submit" name="action" value="Approved" class="btn btn-success btn-sm">Approve</button>
+                                        <button type="submit" name="action" value="Rejected" class="btn btn-danger btn-sm">Reject</button>
                                     </form>
                                 </td>
                             </tr>
