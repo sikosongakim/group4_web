@@ -1,0 +1,52 @@
+/* Staff Information Box */
+.staff-info {
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background to let the image show through */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    color: #333;
+    width: 80%; /* Adjust width as needed */
+    max-width: 800px; /* Limit max width */
+}
+
+/* Staff Info Title */
+.staff-info h2 {
+    font-size: 24px;
+    text-align: center;
+    color: #4CAF50; /* Green color for the title */
+    margin-bottom: 20px;
+}
+
+/* Table Styling for Staff Info */
+.staff-info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.staff-info-table th, .staff-info-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.staff-info-table th {
+    background-color: #f1f1f1;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+.staff-info-table td {
+    background-color: #f9f9f9;
+}
+
+/* Alternate Row Coloring */
+.staff-info-table tr:nth-child(even) td {
+    background-color: #f2f2f2;
+}
+
+/* Adding a hover effect to table rows */
+.staff-info-table tr:hover {
+    background-color: #f1f1f1;
+}
