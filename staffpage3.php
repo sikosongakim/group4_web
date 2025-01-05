@@ -27,6 +27,7 @@ $result = $stmt->get_result();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Staff Schedule</title>
+    <link rel="stylesheet" href="staff/staffstyle1.css">
     <link rel="stylesheet" href="staff/staffstyle3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
 </head>
@@ -38,7 +39,7 @@ $result = $stmt->get_result();
         </div>
         <nav class="navbar">
             <a href="staffpage1.php">Home</a>
-            <a href="staffpage3.php">View Schedule</a>
+            <a class="active" href="staffpage3.php">View Schedule</a>
             <a href="staffpage4.php">Change Schedule</a>
             <a href="staffpage5.php">Request Leave</a>
             <div class="profile-dropdown">

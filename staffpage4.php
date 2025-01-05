@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <nav class="navbar">
             <a href="staffpage1.php">Home</a>
             <a href="staffpage3.php">View Schedule</a>
-            <a href="staffpage4.php">Change Schedule</a>
+            <a class="active" href="staffpage4.php">Change Schedule</a>
             <a href="staffpage5.php">Request Leave</a>
             <div class="profile-dropdown">
                 <a href="#profile" class="profile-icon">

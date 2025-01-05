@@ -60,7 +60,7 @@ $schedule_request = $schedule_result->fetch_assoc();
             <img src="ktm.png" alt="Logo">
         </div>
         <nav class="navbar">
-            <a href="staffpage1.php">Home</a>
+            <a class="active" href="staffpage1.php">Home</a>
             <a href="staffpage3.php">View Schedule</a>
             <a href="staffpage4.php">Change Schedule</a>
             <a href="staffpage5.php">Request Leave</a>

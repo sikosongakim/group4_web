@@ -75,6 +75,11 @@ body {
 .navbar a:hover::before {
   width: 100%;
 }
+.navbar a.active {
+  background-color: #5cd318; /* Highlight color for active link */
+  color: rgb(255, 255, 255); /* Text color for active link */
+  border-radius: 100px; /* Optional: rounded corners */
+}
 
 /* Train Background */
 .train-background {
