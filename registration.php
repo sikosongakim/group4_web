@@ -15,15 +15,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     $staff_id = $_POST['staff_id'];
     $email = $_POST['email'];
     $password = $_POST['password'];
+    $position = $_POST['position'];
+    $gender = $_POST['gender'];
 
     // Hash the password
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     // Insert the data into the database
-    $sql = "INSERT INTO staff (staff_id, first_name, last_name, email, password) 
-            VALUES (?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO staff (staff_id, first_name, last_name, email, password, position, gender) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("issss", $staff_id, $first_name, $last_name, $email, $hashedPassword);
+    $stmt->bind_param("issssss", $staff_id, $first_name, $last_name, $email, $hashedPassword, $position, $gender);
 
     if ($stmt->execute()) {
         echo "<script>
@@ -63,6 +65,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
 
         <label for="password">Password:</label><br>
         <input type="password" name="password" placeholder="Enter Password" required><br><br>
+
+        <label for="position">Position:</label><br>
+        <input type="text" name="position" placeholder="Enter Your Position" required><br><br>
+
+        <label for="gender">Gender:</label><br>
+        <select name="gender" required>
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select><br><br>
+
         <input type="submit" name="register" value="Register"><br><br>
 
         <label>Already have an account? </label>
@@ -71,3 +85,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
 </div>
 </body>
 </html>
+
