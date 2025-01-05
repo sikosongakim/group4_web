@@ -12,7 +12,6 @@ if (!isset($_SESSION['video_shown'])) {
     $_SESSION['video_shown'] = true; // Video will be shown only once after login
 }
 
-
 // Include database configuration to get staff info
 include('config.php');
 
@@ -48,7 +47,10 @@ $schedule_request = $schedule_result->fetch_assoc();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ETS Staff Schedule</title>
     <link rel="stylesheet" href="staff/staffstyle1.css">
+    <link rel="stylesheet" href="staff/staffstyle5.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+
 </head>
 <body>
     
@@ -90,13 +92,38 @@ $schedule_request = $schedule_result->fetch_assoc();
     </div>
 </div>
 
-    <!-- Train Background with Status Table -->
+    <!-- Train Background with Staff Information -->
     <div class="train-background">
         <img src="train.jpg" alt="Train">
     </div>
 
+
+
     <!-- Schedule Status Table -->
     <div class="schedule-status">
+    <h2>Staff Information</h2>
+        <table class="staff-info-table">
+            <tr>
+                <th>First Name:</th>
+                <td><?php echo htmlspecialchars($staff['first_name']); ?></td>
+            </tr>
+            <tr>
+                <th>Last Name:</th>
+                <td><?php echo htmlspecialchars($staff['last_name']); ?></td>
+            </tr>
+            <tr>
+                <th>Email:</th>
+                <td><?php echo htmlspecialchars($staff['email']); ?></td>
+            </tr>
+            <tr>
+                <th>Gender:</th>
+                <td><?php echo htmlspecialchars($staff['gender']); ?></td>
+            </tr>
+            <tr>
+                <th>Position:</th>
+                <td><?php echo htmlspecialchars($staff['position']); ?></td>
+            </tr>
+        </table>
         <h2>Request Status</h2>
         
         <!-- Table for Leave Requests -->
@@ -146,6 +173,7 @@ $schedule_request = $schedule_result->fetch_assoc();
             </nav>
         </div>
     </footer>
+
     <script>
 // Get modal elements
 const videoContainer = document.getElementById("videoContainer");
