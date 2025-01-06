@@ -122,8 +122,8 @@ CREATE TABLE `staff` (
 -- Dumping data for table `staff`
 --
 
-INSERT INTO `staff` (`staff_id`, `first_name`, `last_name`, `email`, `password`, `gender`, `position`, `shift`, `off_day`, `admin_id`, `change_request_id`, `leave_request_id`, `schedule_id`, `request_id`) VALUES
-(34, 'entah ler', 'test', 'askdisajdiasj@gmail.com', '$2y$10$Km3WdKJSmPZP5da/WTFW3eqtUrRN6l/aO4RrJl7rre12bixK2clz6', 'Male', 'Driver', '17:00-23:00', 'Monday', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `staff` (`staff_id`, `first_name`, `last_name`, `email`, `password`, `gender`, `position`, `shift`, `off_day`, `admin_id`, `leave_request_id`, `schedule_id`, `request_id`) VALUES
+(34, 'entah ler', 'test', 'askdisajdiasj@gmail.com', '$2y$10$Km3WdKJSmPZP5da/WTFW3eqtUrRN6l/aO4RrJl7rre12bixK2clz6', 'Male', 'Driver', '17:00-23:00', 'Monday', NULL, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
