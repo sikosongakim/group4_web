@@ -272,6 +272,26 @@ form button:hover {
   background-color: green;
 }
 
+/* Add Staff Button */
+a button{
+  display: block;
+  margin: 0 auto 20px;
+  padding: 10px 20px;
+  color: rgb(239, 239, 239);
+  background-color: black;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s;
+  text-decoration: none;
+}
+  
+a button:hover {
+  background-color: green;
+}
+
 /* Table Styling */
 .container table {
   width: 100%;
