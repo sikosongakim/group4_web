@@ -1,15 +1,22 @@
+/* General Reset and Styling */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Open Sans', sans-serif;
 }
-body{
+
+body {
   position: relative;
   min-height: 100vh;
   width: 100%;
+  margin-left: 125px; /* Adjust based on sidebar width */
+  background-color: white;
+  color: black;
 }
-.sidebar{
+
+/* Sidebar */
+.sidebar {
   position: fixed;
   top: 0;
   left: 0;
@@ -18,22 +25,26 @@ body{
   background: #000000;
   padding: 6px 14px;
 }
-.sidebar .logo_content .logo{
+
+.sidebar .logo_content .logo {
   color: #FFFFFF;
   display: flex;
   height: 50px;
   width: 100%;
   align-items: center;
 }
-.logo_content .logo i{
+
+.logo_content .logo i {
   font-size: 28px;
   margin-right: 5px;
 }
-.logo_content .logo .logo_name{
+
+.logo_content .logo .logo_name {
   font-size: 20px;
   font-weight: 400;
 }
-.sidebar #btn{
+
+.sidebar #btn {
   position: absolute;
   color: #FFFFFF;
   left: 90%;
@@ -45,18 +56,21 @@ body{
   line-height: 50px;
   transform: translateX(-50%);
 }
-.sidebar ul{
+
+.sidebar ul {
   margin-top: 20px;
 }
-.sidebar ul li{
+
+.sidebar ul li {
   position: relative;
   height: 50px;
   width: 100%;
-  margin: 0 5 px;
+  margin: 0 5px;
   list-style: none;
   line-height: 50px;
 }
-.sidebar ul li input{
+
+.sidebar ul li input {
   position: absolute;
   height: 100%;
   width: 100%;
@@ -67,35 +81,40 @@ body{
   border: none;
   background: #1d1b31;
   padding-left: 50px;
-  font-size:18px;
+  font-size: 18px;
   color: #FFFFFF;
 }
-.sidebar ul li .bx-search{
+
+.sidebar ul li .bx-search {
   position: relative;
   z-index: 99;
   color: #FFFFFF;
   font-size: 22px;
 }
-.sidebar ul li a{
-  color:#FFFFFF;
+
+.sidebar ul li a {
+  color: #FFFFFF;
   display: flex;
   align-items: center;
   text-decoration: none;
   transition: all 0.4s ease;
   border-radius: 12px;
 }
-.sidebar ul li a:hover{
+
+.sidebar ul li a:hover {
   color: #000000;
   background: #FFFFFF;
 }
-.sidebar ul li i{
+
+.sidebar ul li i {
   height: 50px;
   min-width: 50px;
   border-radius: 12px;
   line-height: 50px;
   text-align: center;
 }
-#log_out{
+
+#log_out {
   position: absolute;
   color: #FFFFFF;
   left: 88%;
@@ -106,42 +125,35 @@ body{
   font-size: 20px;
   border-radius: 12px;
 }
-/* Closed sidebar styling */
+
+/* Closed Sidebar Styling */
 .sidebar.closed {
-  width: 80px; /* Adjust based on your icon size */
+  width: 80px;
 }
 
 .sidebar.closed .logo .logo_name, 
 .sidebar.closed .nav_list .links_name {
-  display: none; /* Hide the text */
+  display: none;
 }
 
 .sidebar.closed .nav_list li input {
-  display: none; /* Hide the search input */
+  display: none;
 }
 
 .sidebar.closed i {
-  text-align: center; /* Center align the icons */
+  text-align: center;
 }
 
-/* Adjust the button position for the closed sidebar */
-.sidebar.closed #btn {
-  left: 50%; /* Center the toggle button */
-  transform: translateX(-50%);
-}
+.sidebar.closed #btn, 
 .sidebar.closed #log_out {
-  left: 50%; /* Center the toggle button */
+  left: 50%;
   transform: translateX(-50%);
 }
-.sidebar.closed .nav_list a {
-  position: relative;
-}
 
-/* Tooltip styling */
 .sidebar.closed .nav_list a:hover::after {
-  content: attr(data-tooltip); /* Display the tooltip text */
+  content: attr(data-tooltip);
   position: absolute;
-  left: 60px; /* Adjust position next to the icon */
+  left: 60px;
   top: 50%;
   transform: translateY(-50%);
   background-color: #ffffff;
@@ -153,141 +165,120 @@ body{
   white-space: nowrap;
   z-index: 10;
   opacity: 1;
-  pointer-events: none; /* Prevent tooltip blocking interactions */
+  pointer-events: none;
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .sidebar ul li a:hover .bx-search {
-  color: #000000; /* Ensure search icon stays black */
+  color: #000000;
 }
 
-/* Hide tooltip if not hovered */
+/* Hide Tooltip if Not Hovered */
 .sidebar .nav_list a::after {
   opacity: 0;
   transform: translateY(-50%) scale(0.9);
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-/* General Styles */
-body {
-font-family: Arial, sans-serif;
-margin-left: 125px;
-padding: 0;
-background-color: white;
-color: black;
-}
-
+/* Main Content Styling */
 .container {
-width: 100%;
-max-width: 1200px;
-margin: 40px auto;
-padding: 20px;
-background: #fff;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-border-radius: 8px;
-overflow-x: auto;
+  width: 100%;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow-x: auto;
 }
 
+/* Header */
 h1 {
-text-align: center;
-color: #444;
-margin-bottom: 20px;
+  text-align: center;
+  color: #444;
+  margin-bottom: 20px;
 }
 
-/* Search Bar */
+/* Filter Form */
 form {
-display: flex;
-justify-content: center;
-margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px; /* Gap between inputs and buttons */
 }
 
-form input[type="text"] {
-padding: 10px;
-width: 300px;
-border: 1px solid #ccc;
-border-radius: 4px 0 0 4px;
-font-size: 16px;
-outline: none;
-transition: border 0.3s;
+form label {
+  font-size: 16px;
 }
 
-form input[type="text"]:focus {
-border-color: black;
+form input[type="text"], 
+form input[type="date"] {
+  padding: 10px;
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  outline: none;
+  transition: border 0.3s;
+}
+
+form input:focus {
+  border-color: black;
 }
 
 form button {
-padding: 10px 20px;
-color: white;
-background-color: transparent;
-border: none;
-border-radius: 0 4px 4px 0;
-cursor: pointer;
-font-size: 16px;
+  padding: 10px 20px;
+  color: white;
+  background-color: black;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
 }
 
 form button:hover {
-background-color: transparent;
+  background-color: green;
 }
 
-/* Add Staff Button */
-a button{
-display: block;
-margin: 0 auto 20px;
-padding: 10px 20px;
-color: rgb(239, 239, 239);
-background-color: black;
-border: none;
-border-radius: 4px;
-font-size: 16px;
-cursor: pointer;
-text-align: center;
-transition: background-color 0.3s;
-text-decoration: none;
-}
-
-a button:hover {
-background-color: green;
-}
-
-/* Table Styles */
+/* Table Styling */
 .container table {
-width: 100%;
-max-width: 100%;
-border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
 }
 
-.container table, .container th, .container td {
-border: 1px solid black;
-}
-
-.container th, .container td {
-padding: 10px;
-text-align: left;
+.container th, 
+.container td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid black;
 }
 
 .container th {
-background-color: black;
-color: white;
+  background-color: black;
+  color: white;
 }
 
 .container tr:nth-child(even) {
-background-color: #f2f2f2;
+  background-color: #f2f2f2;
 }
 
 .container tr:hover {
-background-color: white;
+  background-color: #f1f1f1;
 }
 
+/* Action Buttons */
 .container .action-buttons a {
-color: black;
-text-decoration: none;
-padding: 5px 10px;
-border: 1px solid #000;
-border-radius: 5px;
-margin-right: 5px;
+  color: black;
+  text-decoration: none;
+  padding: 5px 10px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  margin-right: 5px;
 }
 
 .container .action-buttons a:hover {
-background-color: black;
-color: white;
+  background-color: black;
+  color: white;
 }
