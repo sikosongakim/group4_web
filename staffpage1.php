@@ -153,7 +153,7 @@ $schedule_request = $schedule_result->fetch_assoc();
             <?php if ($schedule_request): ?>
             <tr>
                 <td><?php echo htmlspecialchars($schedule_request['status']); ?></td>
-                <td>From <?php echo htmlspecialchars($schedule_request['current_date']); ?> to <?php echo htmlspecialchars($schedule_request['requested_date']); ?></td>
+                <td><?php echo htmlspecialchars($schedule_request['requested_date']); ?></td>
             </tr>
             <?php else: ?>
             <tr>
