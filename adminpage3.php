@@ -1,4 +1,4 @@
-<?php  
+<?php
 session_start(); // Start the session
 
 // Check if admin is logged in
@@ -16,10 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['request_id'])) {
     $action = $_POST['action']; // 'Approve' or 'Reject'
 
     if ($action == 'Approve') {
-        // Fetch the request details to update the schedule
-        $scheduleRequestStmt = $conn->prepare("SELECT sr.staff_id, sr.current_date, sr.shift 
-                                              FROM schedule_requests sr 
-                                              WHERE sr.request_id = ?");
+        // Fetch the specific schedule change request details
+        $scheduleRequestStmt = $conn->prepare("SELECT * FROM schedule_requests WHERE request_id = ?");
         $scheduleRequestStmt->bind_param("i", $request_id);
         $scheduleRequestStmt->execute();
         $scheduleRequestResult = $scheduleRequestStmt->get_result();
@@ -28,20 +26,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['request_id'])) {
         if ($request) {
             $staff_id = $request['staff_id'];
             $current_date = $request['current_date'];
+            $new_date = $request['requested_date'];
             $new_shift = $request['shift'];
 
-            // Update the schedule with the new shift for the same work date
-            $updateScheduleStmt = $conn->prepare("UPDATE schedules SET shift = ? WHERE staff_id = ? AND work_date = ?");
-            $updateScheduleStmt->bind_param("sis", $new_shift, $staff_id, $current_date);
+            // Update the schedule based on the approved request
+            $updateScheduleStmt = $conn->prepare("UPDATE schedules SET work_date = ?, shift = ? WHERE staff_id = ? AND work_date = ?");
+            $updateScheduleStmt->bind_param("ssis", $new_date, $new_shift, $staff_id, $current_date);
             $updateScheduleStmt->execute();
 
-            // Update the schedule request status to 'Approved'
+            // Mark the request as 'Approved'
             $updateRequestStmt = $conn->prepare("UPDATE schedule_requests SET status = 'Approved' WHERE request_id = ?");
             $updateRequestStmt->bind_param("i", $request_id);
             $updateRequestStmt->execute();
         }
     } else {
-        // Reject the schedule change request (no schedule update)
+        // Mark the request as 'Rejected'
         $updateRequestStmt = $conn->prepare("UPDATE schedule_requests SET status = 'Rejected' WHERE request_id = ?");
         $updateRequestStmt->bind_param("i", $request_id);
         $updateRequestStmt->execute();
@@ -53,35 +52,60 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['leave_request_id'])) {
     $leave_request_id = $_POST['leave_request_id'];
     $action = $_POST['action']; // 'Approve' or 'Reject'
 
-    // Update the leave_requests table based on the action
     $stmt = $conn->prepare("UPDATE leave_requests SET leave_status = ? WHERE leave_request_id = ?");
     $stmt->bind_param("si", $action, $leave_request_id);
     $stmt->execute();
 }
 
-// Fetch all schedules with leave request data
-$schedulesStmt = $conn->prepare("
+// Fetch schedules and leave requests
+$selected_date = $_GET['filter_date'] ?? null;
+$scheduleQuery = "
     SELECT 
-        s.schedule_id, 
-        st.staff_id, 
-        st.first_name, 
-        st.last_name, 
-        s.work_date, 
-        s.shift, 
-        st.position, 
-        st.off_day,
-        lr.leave_status AS leave_status,
-        lr.start_date AS leave_start_date,
-        lr.end_date AS leave_end_date
-    FROM schedules s
-    JOIN staff st ON s.staff_id = st.staff_id
-    LEFT JOIN leave_requests lr ON st.staff_id = lr.staff_id AND lr.leave_status = 'Approved'
-    ORDER BY s.work_date ASC
-");
+    s.schedule_id AS id, 
+    st.staff_id, 
+    st.first_name, 
+    st.last_name, 
+    s.work_date AS work_date, 
+    s.shift, 
+    st.position, 
+    st.off_day,
+    'Scheduled' AS status
+FROM schedules s
+JOIN staff st ON s.staff_id = st.staff_id
+WHERE (? IS NULL OR s.work_date = ?)
+AND NOT EXISTS (
+    SELECT 1 
+    FROM leave_requests lr 
+    WHERE lr.staff_id = s.staff_id 
+    AND lr.leave_status = 'Approved' 
+    AND lr.start_date <= s.work_date 
+    AND lr.end_date >= s.work_date
+)
+UNION
+SELECT 
+    lr.leave_request_id AS id,
+    st.staff_id, 
+    st.first_name, 
+    st.last_name, 
+    lr.start_date AS work_date, 
+    NULL AS shift, 
+    st.position, 
+    st.off_day,
+    'On Leave' AS status
+FROM leave_requests lr
+JOIN staff st ON lr.staff_id = st.staff_id
+WHERE lr.leave_status = 'Approved' 
+AND (? IS NULL OR lr.start_date = ?)
+ORDER BY work_date ASC;
+
+";
+
+$schedulesStmt = $conn->prepare($scheduleQuery);
+$schedulesStmt->bind_param("ssss", $selected_date, $selected_date, $selected_date, $selected_date);
 $schedulesStmt->execute();
 $schedulesResult = $schedulesStmt->get_result();
 
-// Fetch all pending schedule change requests
+// Fetch pending schedule change requests
 $scheduleRequestsStmt = $conn->prepare("SELECT sr.request_id, sr.current_date, sr.requested_date, sr.shift, sr.reason, st.first_name, st.last_name 
                         FROM schedule_requests sr
                         JOIN staff st ON sr.staff_id = st.staff_id
@@ -89,7 +113,7 @@ $scheduleRequestsStmt = $conn->prepare("SELECT sr.request_id, sr.current_date, s
 $scheduleRequestsStmt->execute();
 $scheduleRequestsResult = $scheduleRequestsStmt->get_result();
 
-// Fetch all pending leave requests (Updated to include start_date and end_date)
+// Fetch pending leave requests
 $leaveRequestsStmt = $conn->prepare("SELECT lr.leave_request_id, lr.start_date, lr.end_date, lr.reason, st.first_name, st.last_name 
                         FROM leave_requests lr
                         JOIN staff st ON lr.staff_id = st.staff_id
@@ -97,6 +121,7 @@ $leaveRequestsStmt = $conn->prepare("SELECT lr.leave_request_id, lr.start_date, 
 $leaveRequestsStmt->execute();
 $leaveRequestsResult = $leaveRequestsStmt->get_result();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -114,7 +139,6 @@ $leaveRequestsResult = $leaveRequestsStmt->get_result();
             <div class="logo">
                 <div class="logo_name">ADMIN</div>
             </div>
-            <i class='bx bx-menu' id="btn"></i>
         </div>
         <ul class="nav_list">
             <li>
@@ -163,6 +187,13 @@ $leaveRequestsResult = $leaveRequestsStmt->get_result();
             </li>
         </ul>
 
+        <form method="GET" action="adminpage3.php" class="d-flex align-items-center mb-3">
+            <label for="filter_date" class="form-label me-2" style="font-weight: bold;">Filter by Date:</label>
+            <input type="date" id="filter_date" name="filter_date" class="form-control me-2" style="width: 200px; height: 40px;" value="<?php echo htmlspecialchars($selected_date); ?>"><br>
+            <button type="submit" class="btn btn-primary me-2" >Filter</button>
+            <a href="adminpage3.php" class="btn btn-secondary" >Clear Filter</a>
+        </form>
+
         <div class="tab-content mt-4">
             <!-- View Schedules Tab -->
             <div class="tab-pane fade show active" id="view-schedules" role="tabpanel">
@@ -172,36 +203,32 @@ $leaveRequestsResult = $leaveRequestsStmt->get_result();
                         <tr>
                             <th>Staff ID</th>
                             <th>Staff Name</th>
+                            <th>Work Date</th>
                             <th>Shift</th>
                             <th>Position</th>
                             <th>Off Day</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php while ($row = $schedulesResult->fetch_assoc()): ?>
-                            <?php
-                                // Check if the current date is within an approved leave request period
-                                $current_date = $row['work_date'];
-                                if ($row['leave_status'] == 'Approved' && $current_date >= $row['leave_start_date'] && $current_date <= $row['leave_end_date']) {
-                                    // If the staff member is on leave, do not display a "status" column
-                                    continue; // You can still show a message for "On Leave" in another way if needed
-                                }
-                            ?>
-                            <tr>
-                                <td><?php echo $row['staff_id']; ?></td>
-                                <td><?php echo $row['first_name'] . " " . $row['last_name']; ?></td>
-                                <td><?php echo $row['shift']; ?></td>
-                                <td><?php echo $row['position']; ?></td>
-                                <td><?php echo $row['off_day']; ?></td>
-                            </tr>
-                        <?php endwhile; ?>
+                    <?php while ($row = $schedulesResult->fetch_assoc()): ?>
+                    <tr>
+                        <td><?php echo $row['staff_id']; ?></td>
+                        <td><?php echo $row['first_name'] . " " . $row['last_name']; ?></td>
+                        <td><?php echo $row['work_date']; ?></td>
+                        <td><?php echo $row['shift'] ?? 'N/A'; ?></td> <!-- Show N/A if shift is NULL -->
+                        <td><?php echo $row['position']; ?></td>
+                        <td><?php echo $row['off_day']; ?></td>
+                        <td><?php echo $row['status']; ?></td> <!-- Dynamic Status -->
+                    </tr>
+                    <?php endwhile; ?>
                     </tbody>
                 </table>
             </div>
 
             <!-- Change Requests Tab -->
             <div class="tab-pane fade" id="change-requests" role="tabpanel">
-                <h2>Schedule Change Requests</h2>
+                <h2>Change Requests</h2>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -277,4 +304,3 @@ $leaveRequestsResult = $leaveRequestsStmt->get_result();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
-
