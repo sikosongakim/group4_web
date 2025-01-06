@@ -13,6 +13,9 @@ include('config.php');
 // Get the logged-in staff's ID
 $staff_id = $_SESSION['staff_id'];
 
+// Initialize message variable
+$message = "";
+
 // If form is submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $current_date = $_POST['current_date'];
@@ -20,12 +23,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $shift = $_POST['shift'];  // Store selected shift
     $reason = $_POST['reason'];
 
-    // Insert the request into the schedule_requests table
-    $stmt = $conn->prepare("INSERT INTO schedule_requests (staff_id, `current_date`, requested_date, shift, reason, status) VALUES (?, ?, ?, ?, ?, 'Pending')");
-    $stmt->bind_param("issss", $staff_id, $current_date, $requested_date, $shift, $reason);
-    $stmt->execute();
-
-    $message = "Schedule change request submitted successfully.";
+    // Validate shift value
+    $valid_shifts = ['5:00-11:00', '11:00-17:00', '17:00-23:00'];
+    if (!in_array($shift, $valid_shifts)) {
+        $message = "Invalid shift value.";
+    } else {
+        try {
+            // Prepare the SQL statement
+            $stmt = $conn->prepare("INSERT INTO schedule_requests (staff_id, `current_date`, requested_date, shift, reason, status) VALUES (?, ?, ?, ?, ?, 'Pending')");
+            // Execute the statement
+            $stmt->execute([$staff_id, $current_date, $requested_date, $shift, $reason]);
+            $message = "Schedule change request submitted successfully.";
+        } catch (PDOException $e) {
+            $message = "Error: " . $e->getMessage(); // Capture the error message
+        }
+    }
 }
 ?>
 
@@ -37,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Request Schedule Change</title>
     <link rel="stylesheet" href="staff/staffstyle1.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
-    
 </head>
 <body>
     <!-- Yellow Header -->
@@ -73,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <!-- Request Form Container -->
     <div class="schedule-status">
         <h2>Request Schedule Change</h2>
-        <?php if (isset($message)) echo "<p style='color:green;'>$message</p>"; ?>
+        <?php if ($message) echo "<p style='color:red;'>$message</p>"; ?>
 
         <form action="staffpage4.php" method="POST">
             <label for="current_date">Current Schedule Date:</label>
@@ -84,9 +95,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <label for="shift">Requested Shift:</label>
             <select name="shift" required>
-                <option value="5:00-11:00">5:00 AM - 11:00 AM</option>
-                <option value="11:00-17:00">11:00 AM - 5:00 PM</option>
-                <option value="17:00-23:00">5:00 PM - 11:00 PM</option>
+                <option value="5:00-11:00">5:00-11:00</option>
+                <option value="11:00-17:00">11:00-17:00</option>
+                <option value ="17:00-23:00">17:00-23:00</option>
             </select><br>
 
             <label for="reason">Reason for Change:</label>
@@ -94,20 +105,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <button type="submit">Submit Request</button>
         </form>
-
-        <br>
-        <a href="staffpage1.php"><button>Back to My Schedule</button></a>
     </div>
-
-    <!-- Blue Footer -->
-    <footer class="blue-footer">
-        <div class="footer-content">
-            <p>&copy; 2024 ETS Staff Schedule. All rights reserved.</p>
-            <nav class="footer-links">
-            <a href="ScheduleFAQ.php">Staff Schedule FAQ</a>
-            <a href="LeaveFAQ.php">Staff Leave FAQ</a>
-            </nav>
-        </div>
-    </footer>
 </body>
 </html>
