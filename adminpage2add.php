@@ -33,9 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Insert a default schedule for the new staff member
         $work_date = date('Y-m-d'); // Use today's date for the work date
-        $status = 'Active'; // You can set this to Active or any default status
-        $sql_schedule = "INSERT INTO schedules (staff_id, work_date, shift, status, off_day) 
-                         VALUES ('$staff_id', '$work_date', '$shift', '$status', '$off_day')";
+        $sql_schedule = "INSERT INTO schedules (staff_id, work_date, shift, off_day) 
+                         VALUES ('$staff_id', '$work_date', '$shift', '$off_day')";
 
         if ($conn->query($sql_schedule)) {
             // Redirect to admin page or success page
