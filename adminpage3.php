@@ -207,9 +207,9 @@ $leaveRequestsResult = $leaveRequestsStmt->get_result();
                         <tr>
                             <th>Request ID</th>
                             <th>Staff Name</th>
-                            <th>Current Shift</th>
-                            <th>New Shift</th>
+                            <th>Current Date</th>
                             <th>Request Date</th>
+                            <th>New Shift</th>
                             <th>Reason</th>
                             <th>Action</th>
                         </tr>
