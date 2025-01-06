@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 05, 2025 at 04:38 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Jan 05, 2025 at 07:33 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -19,8 +19,8 @@ SET time_zone = "+00:00";
 
 --
 -- Database: `ets`
---
-
+CREATE DATABASE IF NOT EXISTS `ets` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `ets`;
 -- --------------------------------------------------------
 
 --
@@ -83,23 +83,6 @@ INSERT INTO `schedules` (`schedule_id`, `staff_id`, `work_date`, `shift`, `statu
 -- --------------------------------------------------------
 
 --
--- Table structure for table `schedule_change_requests`
---
-
-CREATE TABLE `schedule_change_requests` (
-  `change_request_id` int(11) NOT NULL,
-  `staff_id` int(11) NOT NULL,
-  `current_shift` enum('5:00-11:00','11:00-17:00','17:00-23:00') NOT NULL,
-  `new_shift` enum('5:00-11:00','11:00-17:00','17:00-23:00') NOT NULL,
-  `request_date` date NOT NULL,
-  `status` enum('Pending','Approved','Rejected') DEFAULT 'Pending',
-  `reason` text DEFAULT NULL,
-  `admin_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `schedule_requests`
 --
 
@@ -130,7 +113,6 @@ CREATE TABLE `staff` (
   `shift` enum('5:00-11:00','11:00-17:00','17:00-23:00') NOT NULL,
   `off_day` enum('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday') DEFAULT 'Monday',
   `admin_id` int(11) DEFAULT NULL,
-  `change_request_id` int(11) DEFAULT NULL,
   `leave_request_id` int(11) DEFAULT NULL,
   `schedule_id` int(11) DEFAULT NULL,
   `request_id` int(11) DEFAULT NULL
@@ -167,14 +149,6 @@ ALTER TABLE `leave_requests`
 ALTER TABLE `schedules`
   ADD PRIMARY KEY (`schedule_id`),
   ADD KEY `staff_id` (`staff_id`);
-
---
--- Indexes for table `schedule_change_requests`
---
-ALTER TABLE `schedule_change_requests`
-  ADD PRIMARY KEY (`change_request_id`),
-  ADD KEY `staff_id` (`staff_id`),
-  ADD KEY `fk_schedule_admin_id` (`admin_id`);
 
 --
 -- Indexes for table `schedule_requests`
@@ -214,12 +188,6 @@ ALTER TABLE `schedules`
   MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
--- AUTO_INCREMENT for table `schedule_change_requests`
---
-ALTER TABLE `schedule_change_requests`
-  MODIFY `change_request_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `schedule_requests`
 --
 ALTER TABLE `schedule_requests`
@@ -240,13 +208,6 @@ ALTER TABLE `staff`
 --
 ALTER TABLE `leave_requests`
   ADD CONSTRAINT `leave_requests_ibfk_1` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`staff_id`);
-
---
--- Constraints for table `schedule_change_requests`
---
-ALTER TABLE `schedule_change_requests`
-  ADD CONSTRAINT `fk_schedule_admin_id` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`),
-  ADD CONSTRAINT `schedule_change_requests_ibfk_1` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`staff_id`);
 
 --
 -- Constraints for table `schedule_requests`
