@@ -53,7 +53,6 @@ CREATE TABLE `leave_requests` (
   `end_date` date NOT NULL,
   `reason` text NOT NULL,
   `leave_status` varchar(20) DEFAULT 'Pending',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
