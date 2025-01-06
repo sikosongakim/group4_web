@@ -52,7 +52,7 @@ CREATE TABLE `leave_requests` (
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `reason` text NOT NULL,
-  `leave_status` varchar(20) DEFAULT 'Pending',
+  `leave_status` varchar(20) DEFAULT 'Pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
